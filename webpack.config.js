@@ -10,8 +10,9 @@ module.exports = {
   },
   devtool: 'source-map',
   output: {
-      path: path.resolve(__dirname, './dist'), //path.resolveで絶対パスを取得、第一引数(__dirname)が現在の階層を表す
-      filename: 'javascript/main.js'
+      path: path.resolve(__dirname, './dist'),
+      filename: 'javascript/[name]-[contenthash].js',
+      publicPath: '/',
   },
   module: {
     rules: [
@@ -43,29 +44,43 @@ module.exports = {
         ],
       },
       {
-        test: /\.js/,
+        test: /\.(js|jsx)/,
         exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env'],
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react',
+              ],
             },
           }
         ],
       },
       {
-        test: /\.png|\.jpg/,
+        test: /\.(png|jpg|jpeg)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'images/[name][ext]',
+          filename: 'images/[name]-[contenthash][ext]',
         },
+        use: [
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+            },
+          },
+        ],
       },
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: './stylesheets/main.css',
+      filename: './stylesheets/[name]-[contenthash].css',
     }),
     new HtmlWebpackPlugin({
       template: './src/templates/index.html',

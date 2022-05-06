@@ -1,1 +1,0 @@
-{"version":3,"file":"./stylesheets/main.css","mappings":"AAAA;EACE;AACF;AAAE;EACE;AAEJ;;AAEA;EACE;EAAA;EAAA;EACA;UAAA;AACF,C","sources":["webpack://react-practice/./src/stylesheets/main.scss"],"sourcesContent":["body {\n  color: lightblue;\n  .purple {\n    color: purple;\n  }\n}\n\n.autoprefix {\n  display: flex;\n  transform: scale(1.3);\n}\n"],"names":[],"sourceRoot":""}
