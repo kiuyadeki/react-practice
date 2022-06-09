@@ -1,19 +1,25 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   mode: 'development',
   entry: {
-    main: './src/javascripts/main.js',
+    main: './src/js/index.js',
   },
-  devtool: 'source-map',
   output: {
       path: path.resolve(__dirname, './dist'),
-      filename: 'javascript/[name]-[contenthash].js',
+      filename: 'js/[name]-[contenthash].js',
       publicPath: '/',
   },
+  devServer: {
+    static: path.resolve(__dirname, 'dist/'),
+    hot: true
+  },
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -23,9 +29,10 @@ module.exports = {
       {
         test: /\.(css|scss|sass)$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
+          // {
+          //   loader: MiniCssExtractPlugin.loader,
+          // },
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {sourceMap: true},
@@ -80,11 +87,12 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: './stylesheets/[name]-[contenthash].css',
+      filename: './css/[name]-[contenthash].css',
     }),
     new HtmlWebpackPlugin({
       template: './src/templates/index.html',
       filename: 'index.html',
+      alwaysWriteToDisk: true
     }),
     new HtmlWebpackPlugin({
       template: './src/templates/access.html',
@@ -94,6 +102,7 @@ module.exports = {
       template: './src/templates/members/taro.html',
       filename: 'members/taro.html',
     }),
+    new HtmlWebpackHarddiskPlugin(),
     new CleanWebpackPlugin(),
   ],
 };
