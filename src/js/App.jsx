@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ColorfulMessage from "./components/ColorfulMessage.jsx";
-
+import React, { useEffect, useState } from 'react';
+import ColorfulMessage from './components/ColorfulMessage.jsx';
 
 const App = () => {
   console.log('render');
@@ -13,7 +12,7 @@ const App = () => {
 
   const onClickSwitchShowFlag = () => {
     setFaceShowFlag(!faceShowFlag);
-  }
+  };
 
   useEffect(() => {
     if (num > 0) {
@@ -26,7 +25,7 @@ const App = () => {
   }, [num]);
 
   return (
-      <>
+    <>
       <h1 style={{ color: 'red' }}>Hello</h1>
       <ColorfulMessage color="green">How ya doin?</ColorfulMessage>
       <ColorfulMessage color="orange">gooood</ColorfulMessage>
@@ -35,8 +34,8 @@ const App = () => {
       <button onClick={onClickSwitchShowFlag}>on/off</button>
       <p>{num}</p>
       {faceShowFlag && <p>( ^ω^ )</p>}
-      </>
-    );
+    </>
+  );
 };
 
 export default App;
