@@ -1,31 +1,31 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const devMode = process.env.NODE_ENV !== 'production';
-const ESLintPlugin = require('eslint-webpack-plugin');
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackHarddiskPlugin = require("html-webpack-harddisk-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const devMode = process.env.NODE_ENV !== "production";
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
+  mode: "development",
   entry: {
-    main: './src/js/index.js',
+    main: "./src/js/index.js",
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'js/[name]-[contenthash].js',
-    publicPath: '/',
+    path: path.resolve(__dirname, "./dist"),
+    filename: "js/[name]-[contenthash].js",
+    publicPath: "/",
   },
   devServer: {
-    static: path.resolve(__dirname, 'dist/'),
+    static: path.resolve(__dirname, "dist/"),
     hot: true,
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   module: {
     rules: [
       {
         test: /\.html$/i,
-        loader: 'html-loader',
+        loader: "html-loader",
       },
       {
         test: /\.(css|scss|sass)$/,
@@ -33,21 +33,21 @@ module.exports = {
           // {
           //   loader: MiniCssExtractPlugin.loader,
           // },
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          devMode ? "style-loader" : MiniCssExtractPlugin.loader,
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: { sourceMap: true },
           },
           {
-            loader: 'postcss-loader',
+            loader: "postcss-loader",
             options: {
               postcssOptions: {
-                plugins: [['autoprefixer']],
+                plugins: [["autoprefixer"]],
               },
             },
           },
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
           },
         ],
       },
@@ -56,22 +56,22 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader',
+            loader: "babel-loader",
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
+              presets: ["@babel/preset-env", "@babel/preset-react"],
             },
           },
         ],
       },
       {
         test: /\.(png|jpg|jpeg)$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'images/[name]-[contenthash][ext]',
+          filename: "images/[name]-[contenthash][ext]",
         },
         use: [
           {
-            loader: 'image-webpack-loader',
+            loader: "image-webpack-loader",
             options: {
               mozjpeg: {
                 progressive: true,
@@ -85,24 +85,24 @@ module.exports = {
   },
   plugins: [
     new ESLintPlugin({
-      extensions: ['.js'],
-      exclude: 'node_modules',
+      extensions: [".js"],
+      exclude: "node_modules",
     }),
     new MiniCssExtractPlugin({
-      filename: './css/[name]-[contenthash].css',
+      filename: "./css/[name]-[contenthash].css",
     }),
     new HtmlWebpackPlugin({
-      template: './src/templates/index.html',
-      filename: 'index.html',
+      template: "./src/templates/index.html",
+      filename: "index.html",
       alwaysWriteToDisk: true,
     }),
     new HtmlWebpackPlugin({
-      template: './src/templates/access.html',
-      filename: 'access.html',
+      template: "./src/templates/access.html",
+      filename: "access.html",
     }),
     new HtmlWebpackPlugin({
-      template: './src/templates/members/taro.html',
-      filename: 'members/taro.html',
+      template: "./src/templates/members/taro.html",
+      filename: "members/taro.html",
     }),
     new HtmlWebpackHarddiskPlugin(),
     new CleanWebpackPlugin(),

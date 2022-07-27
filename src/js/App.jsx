@@ -1,41 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import ColorfulMessage from './components/ColorfulMessage.jsx';
+import React, {useState} from 'react';
+import "../css/main.scss";
 
-const App = () => {
-  console.log('render');
-  const [num, setNum] = useState(0); //[stateの変数名, stateを更新する関数名] numの初期値0
-  const [faceShowFlag, setFaceShowFlag] = useState(false);
+export const App = () => {
+  const [todoText, setTodoText] = useState('');
+  const [incompleteTodos, setIncompleteTodos] = useState(['aaaaa', 'iiiiiii']);
+  const [completeTodos, setCompleteTodos] = useState(['uuuu', 'eee'])
 
-  const onClickCountUp = () => {
-    setNum(num + 1);
-  };
+  const onChangeTodoText = (event) => setTodoText(event.target.value);
 
-  const onClickSwitchShowFlag = () => {
-    setFaceShowFlag(!faceShowFlag);
-  };
+  const onClickAdd = () => {
+    if (todoText === "") return;
+    const  newTodos = [...incompleteTodos, todoText];
+    setIncompleteTodos(newTodos);
+    setTodoText("");
+  }
 
-  useEffect(() => {
-    if (num > 0) {
-      if (num % 3 === 0) {
-        faceShowFlag || setFaceShowFlag(true);
-      } else {
-        faceShowFlag && setFaceShowFlag(false);
-      }
-    }
-  }, [num]);
+  const onClickDelete = (index) => {
+    const newTodos = [...incompleteTodos];
+    newTodos.splice(index, 1);
+    setIncompleteTodos(newTodos);
+  }
+
+  const onClickComplete = (index) => {
+    const newIncompleteTodos = [...incompleteTodos];
+    newIncompleteTodos.splice(index, 1);
+    setIncompleteTodos(newIncompleteTodos);
+    const newCompleteTodos = [...completeTodos, incompleteTodos[index]];
+    setCompleteTodos(newCompleteTodos);
+  }
+
+  const onClickIncomplete = (index) => {
+    const newCompleteTodos = [...completeTodos];
+    newCompleteTodos.splice(index, 1);
+    setCompleteTodos(newCompleteTodos);
+    const newIncompleteTodos = [...incompleteTodos, completeTodos[index]];
+    setIncompleteTodos(newIncompleteTodos);
+    console.log(incompleteTodos);
+  }
+
 
   return (
     <>
-      <h1 style={{ color: 'red' }}>Hello</h1>
-      <ColorfulMessage color="green">How ya doin?</ColorfulMessage>
-      <ColorfulMessage color="orange">gooood</ColorfulMessage>
-      <button onClick={onClickCountUp}>カウントアップ</button>
-      <br />
-      <button onClick={onClickSwitchShowFlag}>on/off</button>
-      <p>{num}</p>
-      {faceShowFlag && <p>( ^ω^ )</p>}
+      <div className="input-area">
+        <input type="text" placeholder='TODOを入力' value={todoText} onChange={onChangeTodoText}/>
+        <button onClick={onClickAdd}>追加</button>
+      </div>
+      <div className="imcomplete-area">
+        <p className="title">未完了のTODO</p>
+        <ul>
+          {incompleteTodos.map((todo, index) => {
+            return (
+              <li className="list-row" key={todo}>
+                <p>{todo}</p>
+                <button onClick={() => onClickComplete(index)}>完了</button>
+                <button onClick={() => onClickDelete(index)}>削除</button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      <div className="complete-area">
+        <p className="title">完了済のTODO</p>
+        <ul>
+          {completeTodos.map((todo, index) => {
+            return (
+              <div key={todo} className="list-row">
+                <li>{todo}</li>
+                <button onClick={() => onClickIncomplete(index)}>戻す</button>
+              </div>
+            )
+          })}
+        </ul>
+      </div>
     </>
   );
 };
 
-export default App;
